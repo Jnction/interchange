@@ -4,7 +4,7 @@ echo "THETRANSITCLOCK DOCKER: Launching TheTransitClock for ${AGENCYID} using SE
 
 nohup java \
   -Xss12m \
-  -Duser.timezone=EST \
+  -Duser.timezone=Europe/London \
   -Dtransitclock.db.dbName="agency-${AGENCYID}" \
   -Dtransitclock.hibernate.configFile="/usr/local/transitclock/config/hibernate.cfg.xml" \
   -Dtransitclock.db.dbHost="${POSTGRES_PORT_5432_TCP_ADDR}:${POSTGRES_PORT_5432_TCP_PORT}" \
