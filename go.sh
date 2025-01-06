@@ -1,11 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/bash -e
 export PGPASSWORD=transitclock
 export PGUSERNAME=postgres
 
-docker stop transitclock-db && docker stop transitclock-server-instance
-docker rm transitclock-db && docker rm transitclock-server-instance
+docker rm --force transitclock-db transitclock-server-instance
 
-docker rmi transitclock-server
+docker rmi --force transitclock-server
 
 # Builds image from Dockerfile
 docker build --no-cache -t transitclock-server .
