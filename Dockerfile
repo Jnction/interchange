@@ -37,6 +37,6 @@ RUN find /usr/local/transitclock -type d -print0 | xargs -0 chmod 777
 RUN find /usr/local/transitclock -type f -print0 | xargs -0 chmod 777
 
 # Inserts agency IDs and GTFS-RT data into properties files
-RUN . agency-looper.build.sh
+RUN agency-looper.build.sh
 
 EXPOSE 8080
