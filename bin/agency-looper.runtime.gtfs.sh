@@ -7,7 +7,8 @@ for filename in /usr/local/transitclock/agencies/*.env; do
   [ -e "$filename" ] || continue
   . "${filename}"
 
-  AGENCYID="${ID}" GTFS_URL="${GTFS}" . import_gtfs.sh
+  AGENCYID="${ID}" GTFS_URL="${GTFS}" . import_gtfs.sh &
 done
+wait
 
 echo 'Finished agency looper for setting up GTFS imports'
