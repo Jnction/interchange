@@ -1,5 +1,14 @@
 trigger: none
 
+resources:
+  pipelines:
+    - pipeline: update_pipeline
+      source: "aubin-otp-pipeline data"
+      trigger:
+        branches:
+          include:
+            - test
+
 parameters:
   - name: environment
     type: string
