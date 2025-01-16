@@ -1,0 +1,47 @@
+trigger: none
+
+parameters:
+  - name: environment
+    type: string
+    default: deploy_test
+  - name: agencies
+    type: string
+    default: UNIB ARHE CSLB ARBB REDE SULV VECT
+  - name: data_pipeline_branch
+    type: string
+    default: 'refs/heads/test'
+
+jobs:
+  - deployment: RunInterchange
+    timeoutInMinutes: 120
+    environment:
+      name: ${{parameters.environment}}
+      resourceType: VirtualMachine
+    workspace:
+      clean: all
+    strategy:
+      rolling:
+        maxParallel: 1
+        deploy:
+          steps:
+            - checkout: self
+              path: interchange
+            - task: DownloadPipelineArtifact@2
+              displayName: download route information JSON
+              inputs:
+                buildType: specific
+                project: Aubin
+                definition: 29
+                buildVersionToDownload: latestFromBranch
+                branchName: ${{parameters.data_pipeline_branch}}
+                artifactName: combined_feed
+                targetPath: $(Pipeline.Workspace)
+                itemPattern: agencies/routes.json
+            - bash: node interchange/generate_agencies.js agencies/routes.json ${{parameters.agencies}}
+              workingDirectory: $(Pipeline.Workspace)
+              displayName: Generate agencies definition
+              env:
+                API_KEY: $(DFT_API_KEY)
+            - bash: ./go.sh
+              workingDirectory: $(Pipeline.Workspace)/interchange
+              displayName: Run interchange
