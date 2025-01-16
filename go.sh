@@ -50,6 +50,7 @@ docker run \
 
 # Starts TransitClock cores
 docker run \
+  --detach \
   --name transitclock-server-instance \
   --rm \
   --link transitclock-db:postgres \
